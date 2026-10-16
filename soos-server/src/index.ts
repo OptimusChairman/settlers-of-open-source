@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import cookieSession from 'cookie-session';
+import cors from 'cors'; // Import cors
 
 import { apiRouter } from './routes/api/index.js';
 import { timingMiddleware } from './routes/utils.js';
@@ -14,7 +15,13 @@ const port = 3000;
 const app: Express = express();
 const server = createServer(app);
 
-// Enable CORS for Socket.io to accept connections from your Vercel frontend
+// Enable CORS for Express API requests from your Vercel frontend
+app.use(cors({
+  origin: true, // Automatically reflects the request origin or specify your exact Vercel URL
+  credentials: true,
+}));
+
+// Enable CORS for Socket.io
 const io = new Server(server, {
   cors: {
     origin: '*',
@@ -40,8 +47,6 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log('disconnected');
   });
-
-  //socket.emit('updateGameState', game.toString());
 });
 
 server.listen(port, () => {
