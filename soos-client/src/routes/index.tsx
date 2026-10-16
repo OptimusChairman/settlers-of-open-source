@@ -10,7 +10,8 @@ import {
 import { io } from 'socket.io-client';
 
 export const AppRoutes = () => {
-  const socket = io();
+  const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+  const socket = io(serverUrl);
 
   const routes = [
     {
