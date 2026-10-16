@@ -20,7 +20,8 @@ export const Entry = () => {
         callback(response);
       })
       .catch((error) => {
-        if (error.response.status == 409) {
+        console.error("Create User Error:", error);
+        if (error.response?.status === 409) {
           console.log(error.response.data);
         }
       });
@@ -45,7 +46,8 @@ export const Entry = () => {
           });
         }
       }).catch((reason) => {
-        if (reason.response.status === 404) {
+        console.error("Game Check Error:", reason);
+        if (reason.response?.status === 404) {
           console.log('Game not found');
         }
       });
@@ -67,6 +69,8 @@ export const Entry = () => {
             name: formData.username,
           },
         });
+      }).catch((error) => {
+        console.error("New Game Error:", error);
       });
     });
   };
