@@ -13,7 +13,14 @@ const port = 3000;
 
 const app: Express = express();
 const server = createServer(app);
-const io = new Server(server);
+
+// Enable CORS for Socket.io to accept connections from your Vercel frontend
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 // Middleware
 app.use(timingMiddleware);
@@ -40,4 +47,3 @@ io.on('connection', socket => {
 server.listen(port, () => {
   console.log(`Settlers of Open Source server listening on port ${port}`);
 });
-
