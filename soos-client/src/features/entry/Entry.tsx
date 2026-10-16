@@ -2,6 +2,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// Set the base URL using a Vite environment variable, falling back to localhost for local testing
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+
 interface IFormInput {
   username: string,
   gamecode: string,
@@ -29,9 +32,6 @@ export const Entry = () => {
     createUserThenAction(formData.username, (response: any) => {
       userID = response.data;
 
-      // Send request to determine if game exists/is joinable
-      // if yes, redirect to appropriate lobby with userID as state
-      // if no, error
       axios.get('/api/game/check', { params: { gamecode: formData.gamecode } },
       ).then((response) => {
         if (response.status == 204) {
@@ -58,8 +58,6 @@ export const Entry = () => {
     createUserThenAction(formData.username, (response: any) => {
       userID = response.data;
 
-      // Send request to create game, retrieve game code
-      // Redirect to lobby with user ID as state
       axios.get('/api/game/new').then((response) => {
         const gamecode = response.data;
 
